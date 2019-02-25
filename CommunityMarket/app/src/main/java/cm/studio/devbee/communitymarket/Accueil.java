@@ -16,13 +16,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -40,6 +43,8 @@ public class Accueil extends AppCompatActivity
     private CircleImageView acceuille_image;
     private TextView drawer_user_name;
     private TextView content_welcome_user;
+    private ImageView imageOne,imageTwo,imageThree,imageFour;
+    private TextView img1,img2,img3,img4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +65,17 @@ public class Accueil extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close );
         drawer.addDrawerListener ( toggle );
         toggle.syncState ();
-
         navigationView.setNavigationItemSelectedListener ( this );
         recup();
+        imageOne=findViewById(R.id.imageSlideOne);
+        imageTwo=findViewById(R.id.imageSlideTwo);
+        imageThree=findViewById(R.id.imageSlideThree);
+        imageFour=findViewById(R.id.imageSlideFour);
+        img1=findViewById(R.id.img1);
+        img2=findViewById(R.id.img2);
+        img3=findViewById(R.id.img3);
+        img4=findViewById(R.id.img4);
+        uptdate();
     }
     public void recup(){
         current_user_id=mAuth.getCurrentUser ().getUid ();
@@ -85,6 +98,48 @@ public class Accueil extends AppCompatActivity
                 }
             }
         } );
+    }
+    public void uptdate(){
+        DocumentReference user = firebaseFirestore.collection("sliders").document("images");
+        user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                if (task.isSuccessful()){
+                    DocumentSnapshot doc =task.getResult();
+                    StringBuilder image=new StringBuilder("");
+                    image.append(doc.get("imageOne"));
+                    img1.setText(image.toString());
+                    String lien = img1.getText().toString();
+                    Picasso.with(Accueil.this).load(lien).into(imageOne);
+                    //////////image deux
+                    StringBuilder image2=new StringBuilder("");
+                    image2.append(doc.get("imageTwo"));
+                    img1.setText(image.toString());
+                    String lien2 = img1.getText().toString();
+                    Picasso.with(Accueil.this).load(lien2).into(imageTwo);
+                    //////image trois
+                    StringBuilder image3=new StringBuilder("");
+                    image3.append(doc.get("imageThree"));
+                    img1.setText(image3.toString());
+                    String lien3 = img1.getText().toString();
+                    Picasso.with(Accueil.this).load(lien3).into(imageThree);
+                    //////////image quatre
+                    StringBuilder image4=new StringBuilder("");
+                    image4.append(doc.get("imageFour"));
+                    img1.setText(image4.toString());
+                    String lien4 = img1.getText().toString();
+                    Picasso.with(Accueil.this).load(lien4).into(imageFour);
+
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(Accueil.this,"erreur lors du chargement du slider",Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
     @Override

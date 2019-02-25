@@ -33,7 +33,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="52dp"
-        android:text="Bienvenue sur nixxon"
+        android:text="Bienvenue sur "
         android:textColor="@color/blanc"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,11 +48,75 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:text="xxxxxxxxxx"
-        android:textColor="@color/blanc"
-        android:textSize="26sp"
+        android:textColor="@color/orange"
+        android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/textView6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="N I X X O N"
+        android:textColor="@color/orange"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView6"
+        app:layout_constraintStart_toEndOf="@+id/textView6"
+        app:layout_constraintTop_toTopOf="@+id/textView6" />
+
+    <ViewFlipper
+        android:id="@+id/viewFlipper"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="8dp"
+        android:flipInterval="2000"
+        android:autoStart="true"
+        app:layout_constraintTop_toBottomOf="@+id/textView12">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/imageSlideOne"
+            android:scaleType="centerCrop"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/imageSlideTwo"
+            android:scaleType="centerCrop"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/imageSlideThree"
+            android:scaleType="centerCrop"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:id="@+id/imageSlideFour"
+            android:scaleType="centerCrop"/>
+    </ViewFlipper>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/img1"
+        android:visibility="invisible"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/img2"
+        android:visibility="invisible"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/img3"
+        android:visibility="invisible"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/img4"
+        android:visibility="invisible"/>
 </android.support.constraint.ConstraintLayout>
