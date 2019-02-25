@@ -1,7 +1,9 @@
 package cm.studio.devbee.communitymarket;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -14,8 +16,26 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class Accueil extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private FirebaseAuth mAuth;
+    private StorageReference storageReference;
+    private FirebaseFirestore firebaseFirestore;
+    private String current_user_id;
+    private CircleImageView acceuille_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +43,11 @@ public class Accueil extends AppCompatActivity
         setContentView ( R.layout.activity_accueil );
         Toolbar toolbar = (Toolbar) findViewById ( R.id.toolbar );
         setSupportActionBar ( toolbar );
+        mAuth=FirebaseAuth.getInstance ();
+        storageReference=FirebaseStorage.getInstance ().getReference ();
+        firebaseFirestore=FirebaseFirestore.getInstance ();
+        current_user_id=mAuth.getCurrentUser ().getUid ();
+        acceuille_image=findViewById(R.id.acceuille_image);
 
 
 
@@ -34,6 +59,19 @@ public class Accueil extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById ( R.id.nav_view );
         navigationView.setNavigationItemSelectedListener ( this );
+        firebaseFirestore.collection ( "mes donnees utilisateur" ).document (current_user_id).get ().addOnCompleteListener ( new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful ()){
+                    if (task.getResult ().exists ()){
+                        String image_profil_user =task.getResult ().getString ("user_profil_image");
+                         //Picasso.with ( Accueil.this ).load ( image_profil_user ).placeholder(R.drawable.use).into ( acceuille_image );
+                    }
+                }else{
+
+                }
+            }
+        } );
     }
 
     @Override
@@ -48,16 +86,12 @@ public class Accueil extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater ().inflate ( R.menu.accueil, menu );
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId ();
 
         //noinspection SimplifiableIfStatement
@@ -71,11 +105,10 @@ public class Accueil extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId ();
 
         if (id == R.id.ic_user) {
-            Intent intent = new Intent ( Accueil.this,ParametrePorfilActivity.class );
+            Intent intent = new Intent ( Accueil.this,ProfileActivity.class );
             startActivity ( intent );
         } else if (id == R.id.ic_logout) {
             Intent intenttwo = new Intent ( Accueil.this,LoginActivity.class );
@@ -86,4 +119,5 @@ public class Accueil extends AppCompatActivity
         drawer.closeDrawer ( GravityCompat.START );
         return true;
     }
+
 }
