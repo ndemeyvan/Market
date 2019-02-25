@@ -83,7 +83,7 @@ public class Accueil extends AppCompatActivity
             super.onBackPressed ();
         }
     }
-
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater ().inflate ( R.menu.accueil, menu );
@@ -95,12 +95,14 @@ public class Accueil extends AppCompatActivity
         int id = item.getItemId ();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.setting) {
+            Intent parametre=new Intent(Accueil.this,ParametrePorfilActivity.class);
+            startActivity(parametre);
             return true;
         }
 
         return super.onOptionsItemSelected ( item );
-    }
+    }*/
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -114,6 +116,9 @@ public class Accueil extends AppCompatActivity
             Intent intenttwo = new Intent ( Accueil.this,LoginActivity.class );
             startActivity ( intenttwo );
             finish ();
+        }else if (id == R.id.setting) {
+            Intent parametre=new Intent(Accueil.this,ParametrePorfilActivity.class);
+            startActivity(parametre);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById ( R.id.drawer_layout );
         drawer.closeDrawer ( GravityCompat.START );

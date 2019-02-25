@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/profil_de_la_toolbar"
         app:titleTextColor="@color/blanc"
-        android:elevation="3dp"/>
+       />
 
     <android.support.v7.widget.CardView
         android:id="@+id/cardview"
