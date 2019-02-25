@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -36,38 +38,49 @@ public class Accueil extends AppCompatActivity
     private FirebaseFirestore firebaseFirestore;
     private String current_user_id;
     private CircleImageView acceuille_image;
+    private TextView drawer_user_name;
+    private TextView content_welcome_user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate ( savedInstanceState );
         setContentView ( R.layout.activity_accueil );
-        Toolbar toolbar = (Toolbar) findViewById ( R.id.toolbar );
+        Toolbar toolbar =findViewById ( R.id.toolbar );
         setSupportActionBar ( toolbar );
+        NavigationView navigationView =findViewById ( R.id.nav_view );
         mAuth=FirebaseAuth.getInstance ();
         storageReference=FirebaseStorage.getInstance ().getReference ();
         firebaseFirestore=FirebaseFirestore.getInstance ();
-        current_user_id=mAuth.getCurrentUser ().getUid ();
-        acceuille_image=findViewById(R.id.acceuille_image);
-
-
-
-        DrawerLayout drawer = (DrawerLayout) findViewById ( R.id.drawer_layout );
+        acceuille_image=navigationView.getHeaderView(0).findViewById(R.id.acceuille_image);
+        drawer_user_name=navigationView.getHeaderView(0).findViewById(R.id.drawer_user_name);
+        content_welcome_user=findViewById(R.id.content_welcome_user);
+        //acceuille_image.setImageDrawable(R.drawable.use);
+        DrawerLayout drawer =findViewById ( R.id.drawer_layout );
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle (
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close );
         drawer.addDrawerListener ( toggle );
         toggle.syncState ();
 
-        NavigationView navigationView = (NavigationView) findViewById ( R.id.nav_view );
         navigationView.setNavigationItemSelectedListener ( this );
+        recup();
+    }
+    public void recup(){
+        current_user_id=mAuth.getCurrentUser ().getUid ();
         firebaseFirestore.collection ( "mes donnees utilisateur" ).document (current_user_id).get ().addOnCompleteListener ( new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful ()){
                     if (task.getResult ().exists ()){
                         String image_profil_user =task.getResult ().getString ("user_profil_image");
-                         //Picasso.with ( Accueil.this ).load ( image_profil_user ).placeholder(R.drawable.use).into ( acceuille_image );
+                        String nom_user = task.getResult ().getString ("user_name");
+                        String prenomuser =task.getResult ().getString ("user_prenom");
+                        drawer_user_name.setText ( nom_user + " " + prenomuser);
+                        content_welcome_user.setText(prenomuser);
+                        Log.d("cle",image_profil_user);
+                        Picasso.with ( Accueil.this ).load ( image_profil_user ).placeholder(R.drawable.use).into ( acceuille_image );
                     }
                 }else{
+
 
                 }
             }

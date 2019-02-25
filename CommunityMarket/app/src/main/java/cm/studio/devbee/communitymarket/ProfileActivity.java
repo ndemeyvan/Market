@@ -30,7 +30,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView residence;
     private TextView email;
     private TextView operation;
-    private  CircleImageView profilImage;
+    private CircleImageView profilImage;
     private ProgressBar progressBar;
     private android.support.v7.widget.Toolbar profil_toolbar;
 
