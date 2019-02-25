@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,6 +31,7 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView email;
     private TextView operation;
     private  CircleImageView profilImage;
+    private ProgressBar progressBar;
     private android.support.v7.widget.Toolbar profil_toolbar;
 
     @Override
@@ -38,6 +41,7 @@ public class ProfileActivity extends AppCompatActivity {
         profil_toolbar=findViewById(R.id.profil_de_la_toolbar);
         setSupportActionBar(profil_toolbar);
         //////////////////
+        progressBar=findViewById(R.id.progressBar);
         mAuth=FirebaseAuth.getInstance();
         nom=findViewById(R.id.profil_user_name);
         telephone=findViewById(R.id.profil_user_phone);
@@ -47,7 +51,7 @@ public class ProfileActivity extends AppCompatActivity {
         storageReference=FirebaseStorage.getInstance ().getReference ();
         firebaseFirestore=FirebaseFirestore.getInstance ();
         profilImage=findViewById(R.id.circleImageView_profil);
-
+        progressBar.setVisibility(View.VISIBLE);
         recupererDonne();
     }
     public void recupererDonne(){
@@ -70,6 +74,7 @@ public class ProfileActivity extends AppCompatActivity {
                         operation.setText("0");
                         getSupportActionBar().setTitle(prenomuser);
                         Picasso.with ( ProfileActivity.this ).load ( image_profil_user ).placeholder(R.drawable.use).into ( profilImage );
+                        progressBar.setVisibility(View.INVISIBLE);
                     }
                 }else{
 
