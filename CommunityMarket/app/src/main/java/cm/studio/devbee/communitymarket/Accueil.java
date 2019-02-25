@@ -75,7 +75,7 @@ public class Accueil extends AppCompatActivity
                         String nom_user = task.getResult ().getString ("user_name");
                         String prenomuser =task.getResult ().getString ("user_prenom");
                         drawer_user_name.setText ( nom_user + " " + prenomuser);
-                        content_welcome_user.setText(prenomuser);
+                        content_welcome_user.setText(nom_user + " " + prenomuser);
                         Log.d("cle",image_profil_user);
                         Picasso.with ( Accueil.this ).load ( image_profil_user ).placeholder(R.drawable.use).into ( acceuille_image );
                     }
@@ -138,4 +138,9 @@ public class Accueil extends AppCompatActivity
         return true;
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        recup();
+    }
 }
