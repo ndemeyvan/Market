@@ -90,8 +90,10 @@ public class ParametrePorfilActivity extends AppCompatActivity {
                       telephone.setText ( telephone_user );
                       residence.setText ( residence_user );
                       email.setText ( email_user );
-                      Picasso.with ( ParametrePorfilActivity.this ).load ( image_profil_user ).into ( parametreImage );
+                      Picasso.with ( ParametrePorfilActivity.this ).load ( image_profil_user ).placeholder(R.drawable.use).into ( parametreImage );
                   }
+               }else{
+
                }
             }
         } );
