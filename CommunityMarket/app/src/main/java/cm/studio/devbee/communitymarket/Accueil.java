@@ -1,11 +1,11 @@
 package cm.studio.devbee.communitymarket;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -17,12 +17,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -32,6 +32,15 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import cm.studio.devbee.communitymarket.login.LoginActivity;
+import cm.studio.devbee.communitymarket.postActivity.PostActivity;
+import cm.studio.devbee.communitymarket.profile.ParametrePorfilActivity;
+import cm.studio.devbee.communitymarket.profile.ProfileActivity;
+import cm.studio.devbee.communitymarket.utilsForCategories.CategoriesAdapte;
+import cm.studio.devbee.communitymarket.utilsForCategories.CategoriesModel;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Accueil extends AppCompatActivity
@@ -42,9 +51,13 @@ public class Accueil extends AppCompatActivity
     private String current_user_id;
     private CircleImageView acceuille_image;
     private TextView drawer_user_name;
-    private TextView content_welcome_user;
     private ImageView imageOne,imageTwo,imageThree,imageFour;
     private TextView img1,img2,img3,img4;
+    private ProgressBar content_progresbar;
+    private RecyclerView content_recyclerView;
+    private CategoriesAdapte categoriesAdapte;
+    private List<CategoriesModel> categoriesModelList;
+    private FloatingActionButton content_floating_action_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +71,6 @@ public class Accueil extends AppCompatActivity
         firebaseFirestore=FirebaseFirestore.getInstance ();
         acceuille_image=navigationView.getHeaderView(0).findViewById(R.id.acceuille_image);
         drawer_user_name=navigationView.getHeaderView(0).findViewById(R.id.drawer_user_name);
-        content_welcome_user=findViewById(R.id.content_welcome_user);
-        //acceuille_image.setImageDrawable(R.drawable.use);
         DrawerLayout drawer =findViewById ( R.id.drawer_layout );
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle (
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close );
@@ -67,6 +78,7 @@ public class Accueil extends AppCompatActivity
         toggle.syncState ();
         navigationView.setNavigationItemSelectedListener ( this );
         recup();
+        //////////////slider
         imageOne=findViewById(R.id.imageSlideOne);
         imageTwo=findViewById(R.id.imageSlideTwo);
         imageThree=findViewById(R.id.imageSlideThree);
@@ -75,7 +87,27 @@ public class Accueil extends AppCompatActivity
         img2=findViewById(R.id.img2);
         img3=findViewById(R.id.img3);
         img4=findViewById(R.id.img4);
+        ///////fin slider
+        content_progresbar=findViewById ( R.id.content_progresbar );
         uptdate();
+        ////////////recyclerView
+        content_recyclerView=findViewById ( R.id.content_recyclerView );
+        categoriesModelList=new ArrayList<> (  );
+        categoriesModelList.add ( new CategoriesModel ( "Marques",R.drawable.logo ) );
+        categoriesModelList.add ( new CategoriesModel ( "Chaussures",R.drawable.chaussure ) );
+        categoriesModelList.add ( new CategoriesModel ( "jupes",R.drawable.jupes ) );
+        categoriesModelList.add ( new CategoriesModel ( "accesoires",R.drawable.accessoires ) );
+        categoriesModelList.add ( new CategoriesModel ( "Cullotes",R.drawable.cullotes ) );
+        categoriesModelList.add ( new CategoriesModel ( "Pantalons",R.drawable.pantalons ) );
+        categoriesModelList.add ( new CategoriesModel ( "T-shirts",R.drawable.t_shirt ) );
+        categoriesModelList.add ( new CategoriesModel ( "Chemises",R.drawable.chemise ) );
+
+        categoriesAdapte=new CategoriesAdapte ( categoriesModelList,Accueil.this );
+        content_recyclerView.setAdapter ( categoriesAdapte );
+        content_recyclerView.setLayoutManager ( new LinearLayoutManager ( this,LinearLayoutManager.HORIZONTAL,false ) );
+        ///////fin recyclerview
+        vaTopost ();
+
     }
     public void recup(){
         current_user_id=mAuth.getCurrentUser ().getUid ();
@@ -88,7 +120,6 @@ public class Accueil extends AppCompatActivity
                         String nom_user = task.getResult ().getString ("user_name");
                         String prenomuser =task.getResult ().getString ("user_prenom");
                         drawer_user_name.setText ( nom_user + " " + prenomuser);
-                        content_welcome_user.setText(nom_user + " " + prenomuser);
                         Log.d("cle",image_profil_user);
                         Picasso.with ( Accueil.this ).load ( image_profil_user ).placeholder(R.drawable.use).into ( acceuille_image );
                     }
@@ -106,6 +137,7 @@ public class Accueil extends AppCompatActivity
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
                 if (task.isSuccessful()){
+                    content_progresbar.setVisibility ( View.INVISIBLE );
                     DocumentSnapshot doc =task.getResult();
                     StringBuilder image=new StringBuilder("");
                     image.append(doc.get("imageOne"));
@@ -151,7 +183,7 @@ public class Accueil extends AppCompatActivity
             super.onBackPressed ();
         }
     }
-/*
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater ().inflate ( R.menu.accueil, menu );
@@ -163,14 +195,14 @@ public class Accueil extends AppCompatActivity
         int id = item.getItemId ();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.setting) {
-            Intent parametre=new Intent(Accueil.this,ParametrePorfilActivity.class);
-            startActivity(parametre);
+        if (id == R.id.search) {
+           /* Intent parametre=new Intent(Accueil.this,ParametrePorfilActivity.class);
+            startActivity(parametre);*/
             return true;
         }
 
         return super.onOptionsItemSelected ( item );
-    }*/
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -197,5 +229,15 @@ public class Accueil extends AppCompatActivity
     protected void onStart() {
         super.onStart();
         recup();
+    }
+    public void vaTopost(){
+        content_floating_action_btn=findViewById ( R.id.content_floating_action_btn );
+        content_floating_action_btn.setOnClickListener ( new View.OnClickListener () {
+            @Override
+            public void onClick(View v) {
+                Intent vaTopost =new Intent ( Accueil.this,PostActivity.class );
+                startActivity ( vaTopost );
+            }
+        } );
     }
 }

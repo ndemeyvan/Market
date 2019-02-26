@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import cm.studio.devbee.communitymarket.login.LoginActivity;
+import cm.studio.devbee.communitymarket.login.RegisterActivity;
+
 public class ChoiceActivity extends AppCompatActivity {
         private Button gotoLogin;
         private Button gotoRegister;

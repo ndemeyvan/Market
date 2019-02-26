@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/setting"
+        android:id="@+id/search"
         android:orderInCategory="100"
         android:title="profil"
-        android:icon="@drawable/setting"
+        android:icon="@drawable/ic_search"
         app:showAsAction="always" />
 </menu>

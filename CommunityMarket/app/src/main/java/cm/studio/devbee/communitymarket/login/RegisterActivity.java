@@ -1,7 +1,6 @@
-package cm.studio.devbee.communitymarket;
+package cm.studio.devbee.communitymarket.login;
 
 import android.content.Intent;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,7 +16,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
+import cm.studio.devbee.communitymarket.R;
+import cm.studio.devbee.communitymarket.profile.ParametrePorfilActivity;
 
 public class RegisterActivity extends AppCompatActivity {
 private EditText email;

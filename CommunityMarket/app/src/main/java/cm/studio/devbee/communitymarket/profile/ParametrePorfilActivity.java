@@ -1,7 +1,6 @@
-package cm.studio.devbee.communitymarket;
+package cm.studio.devbee.communitymarket.profile;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -15,13 +14,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -34,6 +31,8 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.util.HashMap;
 import java.util.Map;
 
+import cm.studio.devbee.communitymarket.Accueil;
+import cm.studio.devbee.communitymarket.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ParametrePorfilActivity extends AppCompatActivity {

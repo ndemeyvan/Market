@@ -19,17 +19,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".login.LoginActivity" />
+        <activity android:name=".login.RegisterActivity" />
         <activity
             android:name=".Accueil"
             android:label="@string/title_activity_accueil"
             android:theme="@style/AppTheme" />
-        <activity android:name=".ParametrePorfilActivity" />
+        <activity android:name=".profile.ParametrePorfilActivity" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".profile.ProfileActivity" />
+        <activity android:name=".postActivity.PostActivity"></activity>
     </application>
 
 </manifest>

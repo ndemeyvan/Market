@@ -26,16 +26,31 @@
         android:textColor="@color/blanc"
         android:background="@drawable/button2_background"
         android:elevation="3dp"/> -->
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/content_floating_action_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="32dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_ajouter" />
+
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="52dp"
-        android:text="Bienvenue sur "
-        android:textColor="@color/blanc"
-        android:textSize="20sp"
+        android:layout_marginTop="68dp"
+        android:text="NIXXON"
+        android:textColor="@color/orange"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:fontFamily="sans-serif-condensed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -45,59 +60,57 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:text="xxxxxxxxxx"
-        android:textColor="@color/orange"
-        android:textSize="28sp"
+        android:text="WELCOME TO"
+        android:textColor="@color/blanc"
+        android:textSize="55sp"
         android:textStyle="bold"
+        app:fontFamily="sans-serif-condensed"
         app:layout_constraintBottom_toTopOf="@+id/textView6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/textView12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:text="N I X X O N"
-        android:textColor="@color/orange"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/textView6"
-        app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintTop_toTopOf="@+id/textView6" />
+        app:layout_constraintVertical_bias="0.483" />
 
     <ViewFlipper
         android:id="@+id/viewFlipper"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_marginTop="8dp"
-        android:flipInterval="2000"
         android:autoStart="true"
-        app:layout_constraintTop_toBottomOf="@+id/textView12">
+        android:flipInterval="4000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6">
+
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
             android:id="@+id/imageSlideOne"
-            android:scaleType="centerCrop"/>
-        <ImageView
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:scaleType="centerCrop" />
+
+        <ImageView
             android:id="@+id/imageSlideTwo"
-            android:scaleType="centerCrop"/>
-        <ImageView
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:scaleType="centerCrop" />
+
+        <ImageView
             android:id="@+id/imageSlideThree"
-            android:scaleType="centerCrop"/>
-        <ImageView
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:scaleType="centerCrop" />
+
+        <ImageView
             android:id="@+id/imageSlideFour"
-            android:scaleType="centerCrop"/>
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop" />
+
     </ViewFlipper>
     <TextView
         android:layout_width="0dp"
@@ -119,4 +132,48 @@
         android:layout_height="0dp"
         android:id="@+id/img4"
         android:visibility="invisible"/>
+
+    <TextView
+        android:id="@+id/explorer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="CATEGORIES"
+        android:textColor="@color/blanc"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:fontFamily="sans-serif-condensed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.028"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewFlipper" />
+
+    <ProgressBar
+        android:id="@+id/content_progresbar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/viewFlipper"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/viewFlipper" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/content_recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/explorer" />
 </android.support.constraint.ConstraintLayout>
