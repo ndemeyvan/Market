@@ -25,7 +25,7 @@ public class PostActivity extends AppCompatActivity {
         setContentView ( R.layout.activity_post );
         toolbar_post=findViewById ( R.id.post_cat_toolbar );
         setSupportActionBar ( toolbar_post );
-        getSupportActionBar ().setTitle ( "choisissez une categorie" );
+        getSupportActionBar ().setTitle ( "choisissez une categorie de vente" );
         post_cat_recycler=findViewById ( R.id.post_cat_recycler );
         categoriesModelPostList=new ArrayList<> (  );
         categoriesModelPostList.add ( new CategoriesModelPost ( "Marques",R.drawable.logo ) );
