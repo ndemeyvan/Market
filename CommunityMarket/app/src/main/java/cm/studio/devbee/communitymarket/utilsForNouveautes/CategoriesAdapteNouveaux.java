@@ -1,7 +1,6 @@
 package cm.studio.devbee.communitymarket.utilsForNouveautes;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,14 +15,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import cm.studio.devbee.communitymarket.Accueil;
 import cm.studio.devbee.communitymarket.R;
-import cm.studio.devbee.communitymarket.postActivity.PostActivityFinal;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CategoriesAdapteNouveaux extends RecyclerView.Adapter<CategoriesAdapteNouveaux.ViewHolder> {
     List<CategoriesModelNouveaux> categoriesModelNouveauxList;
@@ -53,13 +48,13 @@ public class CategoriesAdapteNouveaux extends RecyclerView.Adapter<CategoriesAda
         String nvxPrix=categoriesModelNouveauxList.get(i).getPrix_du_produit();
         String nvxtemps=categoriesModelNouveauxList.get(i).getDate_de_publication();
         String nvxlike=categoriesModelNouveauxList.get(i).getLike();
-        String nvxUser=categoriesModelNouveauxList.get(i).getUsername();
+        //String nvxUser=categoriesModelNouveauxList.get(i).getUsername();
        // viewHolder.image_categories.setImageResource ( categoriesModelNouveauxList.get ( i ).getPost_image_categories () );
         viewHolder.setNom ( desc );
         viewHolder.setPrix(nvxPrix);
         viewHolder.temps(nvxtemps);
-        viewHolder.user_id(nvxUser);
-        firebaseFirestore.collection("mes donnees utilisateur").document(nvxUser).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+       // viewHolder.user_id(nvxUser);
+       /* firebaseFirestore.collection("mes donnees utilisateur").document(nvxUser).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()){
@@ -70,7 +65,7 @@ public class CategoriesAdapteNouveaux extends RecyclerView.Adapter<CategoriesAda
                     Toast.makeText(context,error,Toast.LENGTH_LONG).show();
                 }
             }
-        });
+        });*/
     }
 
     @Override
@@ -93,7 +88,7 @@ public class CategoriesAdapteNouveaux extends RecyclerView.Adapter<CategoriesAda
             tempsDePublication=itemView.findViewById(R.id.nouveaux_temps );
             liker=itemView.findViewById(R.id.nouveaux_nombre_de_like);
             imageDuproduit=itemView.findViewById(R.id.nouveaute_image);
-            user_name=itemView.findViewById(R.id.nouveaux_user_name);
+            user_name=itemView.findViewById(R.id.user_id_nvx);
             //user_image=itemView.findViewById ( R.id.nouveaux_image_profile );
         }
         public void setNom(final String name){

@@ -61,7 +61,7 @@
                 app:layout_constraintVertical_bias="0.864" />
 
             <TextView
-                android:id="@+id/nouveaux_user_name"
+                android:id="@+id/user_id_nvx"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -88,7 +88,7 @@
                 app:fontFamily="sans-serif-condensed"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/nouveaux_image_profile"
-                app:layout_constraintTop_toBottomOf="@+id/nouveaux_user_name" />
+                app:layout_constraintTop_toBottomOf="@+id/user_id_nvx" />
 
             <ImageView
                 android:id="@+id/like_image"

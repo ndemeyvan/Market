@@ -11,13 +11,7 @@ public class CategoriesModelNouveaux {
     private String like;
     private String username;
 
-    public String getUsername() {
-        return username;
-    }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public CategoriesModelNouveaux(){
 
@@ -85,5 +79,12 @@ public class CategoriesModelNouveaux {
 
     public void setLike(String like) {
         this.like = like;
+    }
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
