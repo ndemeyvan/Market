@@ -20,14 +20,19 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -35,12 +40,17 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
+import cm.studio.devbee.communitymarket.a_propos.AproposActivity;
 import cm.studio.devbee.communitymarket.login.LoginActivity;
 import cm.studio.devbee.communitymarket.postActivity.PostActivity;
 import cm.studio.devbee.communitymarket.profile.ParametrePorfilActivity;
 import cm.studio.devbee.communitymarket.profile.ProfileActivity;
 import cm.studio.devbee.communitymarket.utilsForCategories.CategoriesAdapte;
 import cm.studio.devbee.communitymarket.utilsForCategories.CategoriesModel;
+import cm.studio.devbee.communitymarket.utilsForNouveautes.CategoriesAdapteNouveaux;
+import cm.studio.devbee.communitymarket.utilsForNouveautes.CategoriesModelNouveaux;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Accueil extends AppCompatActivity
@@ -58,6 +68,10 @@ public class Accueil extends AppCompatActivity
     private CategoriesAdapte categoriesAdapte;
     private List<CategoriesModel> categoriesModelList;
     private FloatingActionButton content_floating_action_btn;
+    private ViewFlipper viewFlipper;
+    private CategoriesAdapteNouveaux categoriesAdapteNouveaux;
+    private RecyclerView nouveauxRecyclerView;
+    private List<CategoriesModelNouveaux> categoriesModelNouveauxList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +80,15 @@ public class Accueil extends AppCompatActivity
         Toolbar toolbar =findViewById ( R.id.toolbar );
         setSupportActionBar ( toolbar );
         NavigationView navigationView =findViewById ( R.id.nav_view );
+        ////////nouveaux
+        categoriesModelNouveauxList=new ArrayList<>();
+        nouveauxRecyclerView=findViewById(R.id.nouveautes_recyclerView);
+        categoriesAdapteNouveaux=new CategoriesAdapteNouveaux(categoriesModelNouveauxList,Accueil.this);
+        nouveauxRecyclerView.setAdapter(categoriesAdapteNouveaux);
+        nouveauxRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        ////nouveaux
         mAuth=FirebaseAuth.getInstance ();
+        viewFlipper=findViewById(R.id.viewFlipper);
         storageReference=FirebaseStorage.getInstance ().getReference ();
         firebaseFirestore=FirebaseFirestore.getInstance ();
         acceuille_image=navigationView.getHeaderView(0).findViewById(R.id.acceuille_image);
@@ -101,12 +123,12 @@ public class Accueil extends AppCompatActivity
         categoriesModelList.add ( new CategoriesModel ( "Pantalons",R.drawable.pantalons ) );
         categoriesModelList.add ( new CategoriesModel ( "T-shirts",R.drawable.t_shirt ) );
         categoriesModelList.add ( new CategoriesModel ( "Chemises",R.drawable.chemise ) );
-
         categoriesAdapte=new CategoriesAdapte ( categoriesModelList,Accueil.this );
         content_recyclerView.setAdapter ( categoriesAdapte );
         content_recyclerView.setLayoutManager ( new LinearLayoutManager ( this,LinearLayoutManager.HORIZONTAL,false ) );
         ///////fin recyclerview
         vaTopost ();
+        nouveautes();
 
     }
     public void recup(){
@@ -137,6 +159,8 @@ public class Accueil extends AppCompatActivity
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
                 if (task.isSuccessful()){
+                    viewFlipper.setOutAnimation(Accueil.this,android.R.anim.slide_out_right);
+                    viewFlipper.setInAnimation(Accueil.this,android.R.anim.slide_in_left);
                     content_progresbar.setVisibility ( View.INVISIBLE );
                     DocumentSnapshot doc =task.getResult();
                     StringBuilder image=new StringBuilder("");
@@ -220,9 +244,14 @@ public class Accueil extends AppCompatActivity
             Intent parametre=new Intent(Accueil.this,ParametrePorfilActivity.class);
             startActivity(parametre);
         }
+        else if (id == R.id.nous_contacter) {
+            Intent nous_contacter=new Intent(Accueil.this,AproposActivity.class);
+            startActivity(nous_contacter);
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById ( R.id.drawer_layout );
         drawer.closeDrawer ( GravityCompat.START );
         return true;
+        //nous_contacter
     }
 
     @Override
@@ -239,5 +268,20 @@ public class Accueil extends AppCompatActivity
                 startActivity ( vaTopost );
             }
         } );
+    }
+    public void nouveautes(){
+        firebaseFirestore.collection("nouveau_produits").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                for (DocumentChange doc:queryDocumentSnapshots.getDocumentChanges()){
+                    if (doc.getType()==DocumentChange.Type.ADDED){
+                        CategoriesModelNouveaux categoriesModelNouveaux =doc.getDocument().toObject(CategoriesModelNouveaux.class);
+                        categoriesModelNouveauxList.add(categoriesModelNouveaux);
+                        categoriesAdapteNouveaux.notifyDataSetChanged();
+                    }
+                }
+
+            }
+        });
     }
 }

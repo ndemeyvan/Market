@@ -22,6 +22,8 @@ import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -133,9 +135,9 @@ public class PostActivityFinal extends AppCompatActivity {
         Calendar calendar=Calendar.getInstance ();
         SimpleDateFormat currentDate=new SimpleDateFormat (" MMM dd,yyyy" );
         saveCurrentDate=currentDate.format ( calendar.getTime () );
-        SimpleDateFormat curntTime=new SimpleDateFormat (" HH:mm:ss a" );
-        saveCurrentTime=curntTime.format ( calendar.getTime () );
-        randomKey=saveCurrentDate+saveCurrentTime;
+        /*SimpleDateFormat curntTime=new SimpleDateFormat (" HH:mm" );
+        saveCurrentTime=curntTime.format ( calendar.getTime () );*/
+        randomKey=saveCurrentDate;
         final StorageReference image_product_post=storageReference.child ( "image_des_produits" ).child ( current_user_id+".jpg" );
         UploadTask uploadTask =image_product_post.putFile ( mImageUri );
         Task<Uri> urlTask = uploadTask.continueWithTask( new Continuation<UploadTask.TaskSnapshot, Task<Uri>> () {
@@ -153,8 +155,50 @@ public class PostActivityFinal extends AppCompatActivity {
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
                     Uri downloadUri = task.getResult();
-                    progressBar_post.setVisibility ( View.INVISIBLE );
-                    Toast.makeText ( PostActivityFinal.this,"envoyer a storeage",Toast.LENGTH_LONG ).show ();
+                    progressBar_post.setVisibility (View.INVISIBLE);
+                    Map <String,Object> user_post = new HashMap ();
+                    user_post.put ( "nom_du_produit",nom_du_produit );
+                    user_post.put ( "decription_du_produit",decription_du_produit );
+                    user_post.put ( "prix_du_produit",prix_du_produit );
+                    user_post.put ( "date_de_publication",randomKey );
+                    user_post.put ( "utilisateur",current_user_id );
+                    user_post.put ( "image_du_produit",downloadUri.toString() );
+                    firebaseFirestore.collection ( categoryName ).add(user_post).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                            if (task.isSuccessful()){
+
+                            }else{
+                                String error = task.getException().getMessage();
+                                Toast.makeText(PostActivityFinal.this,error,Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                    firebaseFirestore.collection ( "nouveau_produits" ).add(user_post).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                            if (task.isSuccessful()){
+
+                            }else{
+                                String error = task.getException().getMessage();
+                                Toast.makeText(PostActivityFinal.this,error,Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                    firebaseFirestore.collection ( current_user_id ).add(user_post).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                            if (task.isSuccessful()){
+                                Intent gotoRecherche=new Intent(PostActivityFinal.this,Accueil.class);
+                                startActivity(gotoRecherche);
+                                finish();
+                                Toast.makeText(PostActivityFinal.this,"envoie effectuer",Toast.LENGTH_LONG).show();
+                            }else{
+                                String error = task.getException().getMessage();
+                                Toast.makeText(PostActivityFinal.this,error,Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
 
                 } else {
 

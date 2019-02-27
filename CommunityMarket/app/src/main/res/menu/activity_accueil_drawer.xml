@@ -20,7 +20,7 @@
             android:icon="@drawable/setting"
             android:title="parametre" />
         <item
-            android:id="@+id/nous_contactr"
+            android:id="@+id/nous_contacter"
             android:icon="@drawable/ic_contacter_nixxon"
             android:title="publicite" />
         <item

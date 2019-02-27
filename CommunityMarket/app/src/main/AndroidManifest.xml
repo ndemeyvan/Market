@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cm.studio.devbee.communitymarket">
 
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -31,7 +34,8 @@
             android:theme="@style/Base.Theme.AppCompat" />
         <activity android:name=".profile.ProfileActivity" />
         <activity android:name=".postActivity.PostActivity" />
-        <activity android:name=".postActivity.PostActivityFinal"></activity>
+        <activity android:name=".postActivity.PostActivityFinal" />
+        <activity android:name=".a_propos.AproposActivity"></activity>
     </application>
 
 </manifest>
